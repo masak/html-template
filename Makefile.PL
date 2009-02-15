@@ -22,7 +22,7 @@ if ( ! -d $parrot_dir ) {
     exit 1;
 }
 
-my @infiles = map { $_.'.in' } qw< Makefile test_wiki.sh wiki.sh >;
+my @infiles = map { $_.'.in' } qw< Makefile >;
 
 my %replacements = (
     PARROT_DIR => $parrot_dir,
