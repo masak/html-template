@@ -1,5 +1,6 @@
 class HTML::Template;
 
+use Text::Escape;
 use HTML::Template::Grammar;
 
 has $!in;
