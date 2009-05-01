@@ -19,7 +19,7 @@ method param( Pair $param ) {
     %!params{$param.key} = $param.value;
 }
 
-method with_params( Hash %params ) {
+method with_params( %params ) {
     %!params = %params;
     return self;
 }
