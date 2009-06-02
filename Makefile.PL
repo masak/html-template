@@ -49,7 +49,7 @@ if ( !-e 'lib/Test.pm' ) {
         print "Hard linked Test.pm from the Rakudo directory \n";
     }
     else {
-        !system("ln -s $parrot_dir/languages/rakudo/Test.pm lib/") or die @!;
+        !system("ln -s $rakudo_dir/Test.pm lib/") or die @!;
         print "Symlinked Test.pm from the Rakudo directory \n";
     }
 }
