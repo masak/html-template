@@ -24,7 +24,7 @@ grammar HTML::Template::Grammar {
         <.tag_start> 'IF' <attributes> '>' 
         <contents>
         [ '<TMPL_ELSE>' <else=contents> ]?
-        '</TMPL_IF>' 
+        [ '</TMPL_IF>' || { die "missing closing </TMPL_IF> tag" } ] 
     };
 
     regex for_statement {

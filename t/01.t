@@ -120,6 +120,7 @@ my @inputs_that_should_parse =
 my @inputs_that_should_not_parse = (
     [ 'pre<TMPL_IF NAME=YUCK>no tmpl_if',
       { 'YUCK' => 1 },
+      'missing closing </TMPL_IF> tag',
       'an if directive without a closing tag' ],
 );
 
@@ -140,12 +141,20 @@ for @inputs_that_should_parse -> $test {
 
 for @inputs_that_should_not_parse -> $test {
     # RAKUDO: List assignment not implemented yet
-    my $input           = $test[0];
-    my $parameters      = $test[1];
-    my $description     = $test[2];
+    my $input              = $test[0];
+    my $parameters         = $test[1];
+    my $expected_exception = $test[2]; 
+    my $description        = $test[3];
 
-    dies_ok( { HTML::Template.from_string($input).with_params(
-               $parameters).output() }, $description );
+    my $actual_exception;
+    {
+        HTML::Template.from_string($input).with_params(
+               $parameters).output();
+        CATCH {
+            $actual_exception = $_;
+        }
+    }
+    ok( $actual_exception ~~ m/^$expected_exception/, $description );
 }
 
 my $output = HTML::Template.from_file( 't/test-templates/1.tmpl' ).with_params(
