@@ -1,6 +1,5 @@
 use v6;
-# RAKUDO: do not export subs yet
-#module Text::Escape;
+module Text::Escape;
 
 sub escape($str, $how) is export {
     my $m = $how.lc;

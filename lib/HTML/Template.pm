@@ -125,23 +125,4 @@ method substitute( $contents, %params ) {
     return $output;
 }
 
-sub escape($str is copy, $mode) {
-	given $mode {
-		when 'HTML' {
-			$str .= subst(m/\</, "&lt;", :g);	
-			$str .= subst(m/\>/, "&gt;", :g);	
-		}
-		when 'URL' | 'URI' {
-			$str .= subst(m/\ /, "+%20+", :g);	
-		}
-		when 'NONE' {
-			# nothing to do here
-		}
-		default {
-			die "Invalid mode '$mode'";
-		}
-	}
-	return $str;
-}
-
 # vim:ft=perl6
