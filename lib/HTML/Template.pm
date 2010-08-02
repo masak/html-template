@@ -30,7 +30,6 @@ method output() {
 
 method parse( $in? ) {
     HTML::Template::Grammar.parse($in || $!in);
-    #die $/.perl;
     return $/<contents>;
 }
 
@@ -76,13 +75,13 @@ method substitute( $contents, %params ) {
 
             if $cond {
                 $output ~= self.substitute(
-                                $if<contents>,
+                                $if<contents>[0], # TODO: why is this an array?
                                 %params
                             );
             }
             elsif $if<else> {
                 $output ~= self.substitute(
-                                $if<else>[0],
+                                $if<else>[0], # TODO: why is this an array?
                                 %params
                             );
             }
