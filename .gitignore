@@ -1,3 +1,5 @@
 Makefile
 lib/Test.pm
 *.pir
+*~
+*.swp
