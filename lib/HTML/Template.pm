@@ -111,12 +111,13 @@ method substitute( $contents, %params ) {
             my $file = ~$chunk<directive><include><attributes><name><val>;
             %params<TMPL_PATH> = '' if not defined %params<TMPL_PATH>;
             $file = %params<TMPL_PATH> ~ $file;
-            if $file ~~ :e  {
+            # TODO: check for file existance
+            #if $file ~~ :e  {
                 $output ~= self.substitute(
                                 self.parse( slurp($file) ),
                                 %params
                             );
-            }
+            #}
         }
 
         $output ~= ~$chunk<plaintext>;
