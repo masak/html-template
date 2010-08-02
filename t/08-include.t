@@ -51,7 +51,7 @@ for @tests -> $t {
 
     #diag $file;
     my $actual_output
-        #= HTML::Template.from_file($file).output();
+        # = HTML::Template.from_file($file).output();
         = HTML::Template.from_file($file).with_params(
             $parameters).output();
 	#diag "'$actual_output'";
