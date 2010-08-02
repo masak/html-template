@@ -29,9 +29,7 @@ method output() {
 }
 
 method parse( $in? ) {
-    # TODO: If used .parse fall tests, fix it! 
     HTML::Template::Grammar.parse($in || $!in);
-    #die("No match") unless $/;
     #die $/.perl;
     return $/<contents>;
 }
@@ -133,6 +131,22 @@ method substitute( $contents, %params ) {
         $output ~= ~$chunk<plaintext>;
     }
     return $output;
+}
+
+sub escape($str is copy, $mode) {
+	given $mode {
+		when 'HTML' {
+			$str .= subst(m/\</, "&lt;", :g);	
+			$str .= subst(m/\>/, "&gt;", :g);	
+		}
+		when 'URL' {
+			$str .= subst(m/\ /, "+%20+", :g);	
+		}
+		default {
+			die "Invalid mode '$mode'";
+		}
+	}
+	return $str;
 }
 
 # vim:ft=perl6
