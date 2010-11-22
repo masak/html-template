@@ -36,7 +36,7 @@ method parse( $in? ) {
 method substitute( $contents, %params ) {
     my $output = ~$contents<plaintext>;
 
-    for ($contents<chunk> // ()) -> $chunk {
+    for $contents<chunk>.list -> $chunk {
 
         if $chunk<directive><insertion> -> $i {
             my $key = ~$i<attributes><name>;
