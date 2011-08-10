@@ -25,10 +25,10 @@ my @inputs_that_should_parse =
        'pre&lt;post', 'variable insertion with HTML escape' ],
 
     [ 'pre<TMPL_VAR BAR ESCAPE=URL>post', { 'BAR' => ' ' },
-       'pre+%20+post', 'variable insertion with URL escape' ],
+       'pre+post', 'variable insertion with URL escape' ],
 
-    [ 'pre<TMPL_VAR BAR ESCAPE=URI>post', { 'BAR' => ' ' },
-       'pre+%20+post', 'variable insertion with URI escape' ],
+    [ 'pre<TMPL_VAR BAR ESCAPE=URI>post', { 'BAR' => ' foo /?[]' },
+       'pre+foo+%2F%3F%5B%5Dpost', 'variable insertion with URI escape' ],
 
     [ 'pre<TMPL_VAR NAME=BAR>between<TMPL_VAR NAME=BAZ>post',
       { 'BAR' => '!', 'BAZ' => '!!' },
