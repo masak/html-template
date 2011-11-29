@@ -3,7 +3,7 @@ class HTML::Template;
 use Text::Escape;
 use HTML::Template::Grammar;
 
-has $!in;
+has $.in;
 has %!params;
 has %!meta;
 
@@ -29,8 +29,9 @@ method output() {
 }
 
 method parse( $in? ) {
-    HTML::Template::Grammar.parse($in || $!in);
-    return $/<contents>;
+    my $match := HTML::Template::Grammar.parse($in || $!in);
+    die "Failed to parse the template" unless $match;
+    return $match<contents>;
 }
 
 method substitute( $contents, %params ) {

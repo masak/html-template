@@ -151,10 +151,12 @@ for @inputs_that_should_not_parse -> $test {
         HTML::Template.from_string($input).with_params(
                $parameters).output();
         CATCH {
-            $actual_exception = $_;
+            default {
+                $actual_exception = $_;
+            }
         }
     }
-    ok( $actual_exception ~~ m/^$expected_exception/, $description );
+    ok( $actual_exception.Str ~~ m/^$expected_exception/, $description );
 }
 
 my $output = HTML::Template.from_file( 't/test-templates/1.tmpl' ).with_params(
