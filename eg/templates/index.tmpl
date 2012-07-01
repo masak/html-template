@@ -1,0 +1,18 @@
+  <html><head><title><TMPL_VAR title></head>
+  <body>
+  <h1><TMPL_VAR title>
+
+   <ul>
+  <TMPL_LOOP authors>
+    <li><TMPL_VAR name></li>
+  </TMPL_LOOP>
+  </ul>
+
+  <TMPL_IF error>
+   <div id="error">Some error happened</div>
+  </TMPL_IF>
+
+  </body>
+  </html>
+
+

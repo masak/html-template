@@ -3,6 +3,61 @@ class HTML::Template;
 use Text::Escape;
 use HTML::Template::Grammar;
 
+=begin pod
+
+=head1 NAME
+
+HTML::Template - A simple templating system based on the HTML::Template of Perl 5
+
+=head1 SYNOPSIS
+
+eg/index.pl6 looks like this:
+
+  use v6;
+
+  use HTML::Template;
+
+  my %params = (
+    title => 'Hello Perl 6 world',
+    authors => Array.new(
+      { name => 'Ilya'   },
+      { name => 'Moritz' },
+      { name => 'Lyle'   },
+      { name => 'Carl'   },
+      { name => 'Johan'  },
+    ),
+  );
+
+  my $ht = HTML::Template.from_file("templates/index.tmpl");
+  $ht.with_params(%params);
+  print $ht.output;
+
+eg/templates/index.tmpl looks like this:
+
+  <html><head><title><TMPL_VAR title></head>
+  <body>
+  <h1><TMPL_VAR title>
+
+   <ul>
+  <TMPL_LOOP authors>
+    <li><TMPL_VAR name></li>
+  </TMPL_LOOP>
+  </ul>
+
+  <TMPL_IF error>
+   <div id="error">Some error happened</div>
+  </TMPL_IF>
+
+  </body>
+  </html>
+
+
+=head1 AUTHOR
+
+Carl Masak
+
+=end pod
+
 has $.in;
 has %!params;
 has %!meta;
