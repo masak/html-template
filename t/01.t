@@ -1,7 +1,7 @@
 use v6;
 
 use Test;
-plan 29;
+plan 30;
 
 use HTML::Template;
 
@@ -157,7 +157,12 @@ my @files_that_should_not_parse = (
     [ 't/test-templates/err_1.tmpl',
       {},
       'Failed to parse the template in file t/test-templates/err_1.tmpl',
-      'Broken template',
+      'Broken template opening tag broken',
+    ],
+    [ 't/test-templates/err_2.tmpl',
+      {},
+      'missing closing </TMPL_IF> tag in file t/test-templates/err_2.tmpl',
+      'Broken template - no closing tag',
     ],
 );
 for @files_that_should_not_parse -> $case {

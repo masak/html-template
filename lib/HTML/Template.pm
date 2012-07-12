@@ -86,7 +86,14 @@ method output() {
 
 method parse( $in? ) {
     my $match := HTML::Template::Grammar.parse($in || $!in);
-    die "Failed to parse the template" ~ ($.file ?? " in file $.file" !! "") unless $match;
+    die "Failed to parse the template" unless $match;
+    CATCH {
+        default {
+            my $err = $_;
+            die $err ~ ($.file ?? " in file $.file" !! "");
+        }
+    }
+    #die "Failed to parse the template" ~ ($.file ?? " in file $.file" !! "") unless $match;
     return $match<contents>;
 }
 
