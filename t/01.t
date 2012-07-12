@@ -125,11 +125,8 @@ my @inputs_that_should_not_parse = (
 );
 
 for @inputs_that_should_parse -> $test {
-    # RAKUDO: List assignment not implemented yet
-    my $input           = $test[0];
-    my $parameters      = $test[1];
-    my $expected_output = $test[2];
-    my $description     = $test[3];
+    my ($input, $parameters, $expected_output, $description)
+        = @$test;
 
     # RAKUDO: Break this line with long dots.
     my $actual_output
