@@ -140,11 +140,8 @@ for @inputs_that_should_parse -> $test {
 }
 
 for @inputs_that_should_not_parse -> $test {
-    # RAKUDO: List assignment not implemented yet
-    my $input              = $test[0];
-    my $parameters         = $test[1];
-    my $expected_exception = $test[2]; 
-    my $description        = $test[3];
+    my ($input, $parameters, $expected_exception, $description)
+        = @$test;
 
     my $actual_exception;
     {
