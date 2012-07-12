@@ -1,7 +1,7 @@
 use v6;
 
 use Test;
-plan 30;
+plan 31;
 
 use HTML::Template;
 
@@ -122,6 +122,10 @@ my @inputs_that_should_not_parse = (
       { 'YUCK' => 1 },
       'missing closing </TMPL_IF> tag',
       'an if directive without a closing tag' ],
+    [ 'pre<TMPL_INCLUDE file.tmpl>no NAME',
+      { 'YUCK' => 1 },
+      'Failed to parse the template', #  TODO better error message!
+      'an INCLUDE directive without NAME' ],
 );
 
 for @inputs_that_should_parse -> $test {
