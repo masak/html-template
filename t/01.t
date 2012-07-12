@@ -1,7 +1,7 @@
 use v6;
 
 use Test;
-plan 31;
+plan 32;
 
 use HTML::Template;
 
