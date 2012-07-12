@@ -61,13 +61,14 @@ Carl Masak
 has $.in;
 has %!params;
 has %!meta;
+has $.file;
 
 method from_string( Str $in ) {
     return self.new(in => $in);
 }
 
 method from_file($file_path) {
-    return self.from_string( slurp($file_path) );
+    return self.new(in => slurp($file_path), file => $file_path);
 }
 
 method param( Pair $param ) {
@@ -85,7 +86,7 @@ method output() {
 
 method parse( $in? ) {
     my $match := HTML::Template::Grammar.parse($in || $!in);
-    die "Failed to parse the template" unless $match;
+    die "Failed to parse the template" ~ ($.file ?? " in file $.file" !! "") unless $match;
     return $match<contents>;
 }
 

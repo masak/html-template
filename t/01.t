@@ -1,7 +1,7 @@
 use v6;
 
 use Test;
-plan 28;
+plan 29;
 
 use HTML::Template;
 
@@ -150,6 +150,30 @@ for @inputs_that_should_not_parse -> $test {
     {
         HTML::Template.from_string($input).with_params(
                $parameters).output();
+        CATCH {
+            default {
+                $actual_exception = $_;
+            }
+        }
+    }
+    ok( $actual_exception.Str ~~ m/^$expected_exception/, $description );
+}
+
+my @files_that_should_not_parse = (
+    [ 't/test-templates/err_1.tmpl',
+      {},
+      'Failed to parse the template in file t/test-templates/err_1.tmpl',
+      'Broken template',
+    ],
+);
+for @files_that_should_not_parse -> $case {
+    my ($file, $parameters, $expected_exception, $description)
+        = @$case;
+
+    my $actual_exception;
+    {
+        HTML::Template.from_file( $file ).with_params(
+            $parameters ).output;
         CATCH {
             default {
                 $actual_exception = $_;
