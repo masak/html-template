@@ -156,6 +156,16 @@ for @inputs_that_should_not_parse -> $test {
     }
     ok( $actual_exception.Str ~~ m/^$expected_exception/, $description );
 }
+{
+    my $parameters = {fname => 'Foo'};
+
+    my $warning;
+    my $actual_output
+          = HTML::Template.from_string('hi <TMPL_VAR fname> <TMPL_VAR lname>,').with_params(
+          $parameters).output();
+    is $actual_output, 'hi Foo ,', 'output';
+}
+
 
 my @files_that_should_not_parse = (
     [ 't/test-templates/err_1.tmpl',

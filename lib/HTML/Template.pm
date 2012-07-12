@@ -113,7 +113,12 @@ method substitute( $contents, %params ) {
             }
             
             # RAKUDO: Scalar type not implemented yet
-            warn "Param $key is a { $value.WHAT }" unless $value ~~ Str | Int;
+            if defined $value {
+                warn "Param $key is a { $value.WHAT }" unless $value ~~ Str | Int;
+            } else {
+                warn  "Param $key is a undef";
+                $value = '';
+            }
 
             if $i<attributes><escape> {
                 my $et = ~$i<attributes><escape>[0];
