@@ -61,13 +61,14 @@ Carl Masak
 has $.in;
 has %!params;
 has %!meta;
+has $.file;
 
 method from_string( Str $in ) {
     return self.new(in => $in);
 }
 
 method from_file($file_path) {
-    return self.from_string( slurp($file_path) );
+    return self.new(in => slurp($file_path), file => $file_path);
 }
 
 method param( Pair $param ) {
@@ -86,6 +87,13 @@ method output() {
 method parse( $in? ) {
     my $match := HTML::Template::Grammar.parse($in || $!in);
     die "Failed to parse the template" unless $match;
+    CATCH {
+        default {
+            my $err = $_;
+            die $err ~ ($.file ?? " in file $.file" !! "");
+        }
+    }
+    #die "Failed to parse the template" ~ ($.file ?? " in file $.file" !! "") unless $match;
     return $match<contents>;
 }
 
@@ -97,15 +105,20 @@ method substitute( $contents, %params ) {
         if $chunk<directive><insertion> -> $i {
             my $key = ~$i<attributes><name>;
 
-            my $value; 
+            my $value;
             if (defined %params{$key}) {
-                $value = %params{$key}; 
+                $value = %params{$key};
             } else {
                 $value = %!params{$key};
             }
-            
+
             # RAKUDO: Scalar type not implemented yet
-            warn "Param $key is a { $value.WHAT }" unless $value ~~ Str | Int;
+            if defined $value {
+                warn "Param $key is a { $value.WHAT }" unless $value ~~ Str | Int;
+            } else {
+                warn  "Param $key is a undef";
+                $value = '';
+            }
 
             if $i<attributes><escape> {
                 my $et = ~$i<attributes><escape>[0];
@@ -119,7 +132,7 @@ method substitute( $contents, %params ) {
                 if %!meta<loops><current> -> $c {
                     if $lc<lc_last> {
                         $cond = ?($c<elems> == $c<iteration>);
-                    } 
+                    }
                     elsif $lc<lc_first> {
                         $cond = ?($c<iteration> == 1);
                     }
@@ -146,7 +159,7 @@ method substitute( $contents, %params ) {
             my $key = ~$for<attributes><name><val>;
 
             my $iterations = %params{$key};
-            
+
             # RAKUDO: Rakudo doesn't understand autovivification of multiple
             # hash indices %!meta<loops><current> = $key; [perl #61740]
             %!meta<loops> = {} unless defined %!meta<loops>;
@@ -154,7 +167,7 @@ method substitute( $contents, %params ) {
             # that will fail on nested same-named loops... hm
             %!meta<loops>{$key} = {elems => $iterations.elems, iteration => 0};
             %!meta<loops><current> = %!meta<loops>{$key};
-            
+
             for $iterations.values -> $iteration {
                 %!meta<loops>{$key}<iteration>++;
                 $output ~= self.substitute(

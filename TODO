@@ -1,0 +1,11 @@
+
+Nested IF statements don't seem to work:
+
+<TMPL_IF a>
+  <TMPL_IF b>
+  </TMPL_IF>
+</TMPL_IF>
+
+
+It seems that in <TMPL_VAR name> 'name' is case sensitive.
+

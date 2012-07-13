@@ -1,7 +1,7 @@
 use v6;
 
 use Test;
-plan 28;
+plan 32;
 
 use HTML::Template;
 
@@ -122,14 +122,15 @@ my @inputs_that_should_not_parse = (
       { 'YUCK' => 1 },
       'missing closing </TMPL_IF> tag',
       'an if directive without a closing tag' ],
+    [ 'pre<TMPL_INCLUDE file.tmpl>no NAME',
+      { 'YUCK' => 1 },
+      'Failed to parse the template', #  TODO better error message!
+      'an INCLUDE directive without NAME' ],
 );
 
 for @inputs_that_should_parse -> $test {
-    # RAKUDO: List assignment not implemented yet
-    my $input           = $test[0];
-    my $parameters      = $test[1];
-    my $expected_output = $test[2];
-    my $description     = $test[3];
+    my ($input, $parameters, $expected_output, $description)
+        = @$test;
 
     # RAKUDO: Break this line with long dots.
     my $actual_output
@@ -140,16 +141,52 @@ for @inputs_that_should_parse -> $test {
 }
 
 for @inputs_that_should_not_parse -> $test {
-    # RAKUDO: List assignment not implemented yet
-    my $input              = $test[0];
-    my $parameters         = $test[1];
-    my $expected_exception = $test[2]; 
-    my $description        = $test[3];
+    my ($input, $parameters, $expected_exception, $description)
+        = @$test;
 
     my $actual_exception;
     {
         HTML::Template.from_string($input).with_params(
                $parameters).output();
+        CATCH {
+            default {
+                $actual_exception = $_;
+            }
+        }
+    }
+    ok( $actual_exception.Str ~~ m/^$expected_exception/, $description );
+}
+{
+    my $parameters = {fname => 'Foo'};
+
+    my $warning;
+    my $actual_output
+          = HTML::Template.from_string('hi <TMPL_VAR fname> <TMPL_VAR lname>,').with_params(
+          $parameters).output();
+    is $actual_output, 'hi Foo ,', 'output';
+}
+
+
+my @files_that_should_not_parse = (
+    [ 't/test-templates/err_1.tmpl',
+      {},
+      'Failed to parse the template in file t/test-templates/err_1.tmpl',
+      'Broken template opening tag broken',
+    ],
+    [ 't/test-templates/err_2.tmpl',
+      {},
+      'missing closing </TMPL_IF> tag in file t/test-templates/err_2.tmpl',
+      'Broken template - no closing tag',
+    ],
+);
+for @files_that_should_not_parse -> $case {
+    my ($file, $parameters, $expected_exception, $description)
+        = @$case;
+
+    my $actual_exception;
+    {
+        HTML::Template.from_file( $file ).with_params(
+            $parameters ).output;
         CATCH {
             default {
                 $actual_exception = $_;
