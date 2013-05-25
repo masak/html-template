@@ -121,7 +121,7 @@ method substitute( $contents, %params ) {
             }
 
             if $i<attributes><escape> {
-                my $et = ~$i<attributes><escape>[0];
+                my $et = ~$i<attributes><escape>;
                 $value = escape($value, $et);
             }
             $output ~= ~$value;
