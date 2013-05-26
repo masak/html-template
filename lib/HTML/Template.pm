@@ -150,7 +150,7 @@ method substitute( $contents, %params ) {
             }
             elsif $if<else> {
                 $output ~= self.substitute(
-                                $if<else>[0],
+                                $if<else>,
                                 %params
                             );
             }
