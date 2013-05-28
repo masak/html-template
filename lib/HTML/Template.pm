@@ -121,7 +121,7 @@ method substitute( $contents, %params ) {
             }
 
             if $i<attributes><escape> {
-                my $et = ~$i<attributes><escape>[0];
+                my $et = ~$i<attributes><escape>;
                 $value = escape($value, $et);
             }
             $output ~= ~$value;
@@ -150,7 +150,7 @@ method substitute( $contents, %params ) {
             }
             elsif $if<else> {
                 $output ~= self.substitute(
-                                $if<else>[0],
+                                $if<else>,
                                 %params
                             );
             }
