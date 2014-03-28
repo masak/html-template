@@ -103,7 +103,7 @@ method substitute( $contents, %params ) {
     for $contents<chunk>.list -> $chunk {
 
         if $chunk<directive><insertion> -> $i {
-            my $key = ~$i<attributes><name>;
+            my $key = ~$i<attributes><name><val>;
 
             my $value;
             if (defined %params{$key}) {
@@ -139,7 +139,7 @@ method substitute( $contents, %params ) {
                 }
             }
             else {
-                $cond = %params{~$if<attributes><name>};
+                $cond = %params{~$if<attributes><name><val>};
             }
 
             if $cond {
