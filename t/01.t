@@ -1,7 +1,7 @@
 use v6;
 
 use Test;
-plan 32;
+plan 33;
 
 use HTML::Template;
 
@@ -115,6 +115,9 @@ my @inputs_that_should_parse =
       { 'FOO' => [ { :BAR } ] },
       ":)",
       'we can use TMPL_LOOP as TMPL_FOR' ],
+
+    [ 'pre<TMPL_VAR NAME="BAR">post', { 'BAR' => 50 },
+      'pre50post', 'simple variable insertion with quoted name' ],
 ;
 
 my @inputs_that_should_not_parse = (
