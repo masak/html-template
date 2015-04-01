@@ -2,6 +2,11 @@
     "name"        : "HTML::Template",
     "version"     : "*",
     "description" : "A simple almost-port of CPAN's HTML::Template to Perl 6",
+    "provides"    : {
+        "Text::Escape"            : "lib/Text/Escape.pm",
+        "HTML::Template"          : "lib/HTML/Template.pm",
+        "HTML::Template::Grammar" : "lib/HTML/Template/Grammar.pm"
+    },
     "depends"     : [ ],
     "repo-type"   : "git",
     "source-url"  : "git://github.com/masak/html-template.git"
