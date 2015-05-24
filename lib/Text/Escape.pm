@@ -1,5 +1,5 @@
 use v6;
-module Text::Escape;
+unit module Text::Escape;
 
 sub escape($str, $how) is export {
     my $m = $how.lc;
