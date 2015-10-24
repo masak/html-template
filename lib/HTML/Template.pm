@@ -158,17 +158,17 @@ method substitute( $contents, %params ) {
         elsif $chunk<directive><for_statement> -> $for {
             my $key = ~$for<attributes><name><val>;
 
-            my $iterations = %params{$key};
+            my @iterations = |%params{$key};
 
             # RAKUDO: Rakudo doesn't understand autovivification of multiple
             # hash indices %!meta<loops><current> = $key; [perl #61740]
             %!meta<loops> = {} unless defined %!meta<loops>;
 
             # that will fail on nested same-named loops... hm
-            %!meta<loops>{$key} = {elems => $iterations.elems, iteration => 0};
+            %!meta<loops>{$key} = {elems => @iterations.elems, iteration => 0};
             %!meta<loops><current> = %!meta<loops>{$key};
 
-            for $iterations.values -> $iteration {
+            for @iterations -> $iteration {
                 %!meta<loops>{$key}<iteration>++;
                 $output ~= self.substitute(
                                 $for<contents>,
